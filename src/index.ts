@@ -1,7 +1,2 @@
-export type {
-  IEncodeOptions,
-  CutTypes,
-  ImageModes,
-  IPulse,
-} from './encode-canvas'
-export { connectToPrinter } from './PrinterManager'
+export { IEncodeOptions, CutTypes, ImageModes, IPulse } from './encode-canvas'
+export { connectToPrinter, TPrintCanvas } from './PrinterManager'
