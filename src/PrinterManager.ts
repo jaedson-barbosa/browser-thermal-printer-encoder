@@ -1,22 +1,17 @@
-export class PrinterManager {
-  private port: SerialPort | undefined
+import { IEncodeOptions } from "."
+import { encodeCanvas } from "./encode-canvas"
 
-  public get connected(): boolean {
-    return !!this.port
-  }
-
-  async connect() {
-    const port = await navigator.serial.requestPort()
-    this.port = port
-    return !!port
-  }
-
-  async writeData(data: Uint8Array) {
-    if (!this.port) throw new Error('Printer is not connected.')
-    await this.port.open({ baudRate: 9600 })
-    const writer = this.port.writable!.getWriter()
-    await writer.write(data)
-    writer.releaseLock()
-    this.port.close()
-  }
+export async function connectToPrinter() {
+  const port = await navigator.serial.requestPort()
+  if (port) {
+    return async (options: IEncodeOptions) => {
+      const data = encodeCanvas(options)
+      if (!port) throw new Error('Printer is not connected.')
+      await port.open({ baudRate: 9600 })
+      const writer = port.writable!.getWriter()
+      await writer.write(data)
+      writer.releaseLock()
+      port.close()
+    }
+  } else return undefined
 }
