@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES2019",
     "outDir": "dist",
     "declaration": true,
     "strict": true,
