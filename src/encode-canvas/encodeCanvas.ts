@@ -13,13 +13,15 @@ export function encodeCanvas(options: IEncodeOptions) {
       ? encodeColumn(canvasData)
       : encodeRaster(canvasData)
 
-  return new Uint8Array([
-    ...ignoreLines(options.paddingTop),
-    ...encodedCanvas,
-    ...ignoreLines(options.paddingBottom),
-    ...cutPaper(options.cut),
-    ...sendPulse(options.pulse),
-  ])
+  const data: number[] = [
+    [0x1b, 0x40],
+    ignoreLines(options.paddingTop),
+    encodedCanvas,
+    ignoreLines(options.paddingBottom),
+    cutPaper(options.cut),
+    sendPulse(options.pulse),
+  ].flat()
+  return new Uint8Array(data)
 }
 
 export enum ImageModes {
